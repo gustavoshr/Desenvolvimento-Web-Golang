@@ -1,0 +1,76 @@
+{{define "Edit"}}
+
+<!DOCTYPE html>
+<html lang="en">
+{{template "head" .}}
+    <body class="bg-light">
+        {{template "nav" .}}
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white">
+                            <h1 class="h3 mb-0">Edit Product</h1>
+                            <small class="text-muted">Update the details below</small>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="/update">
+                                <input type="hidden" name="id" value="{{.ID}}">
+                                <div class="form-group">
+                                    <label for="nome">Name</label>
+                                    <input type="text" id="nome" name="name" class="form-control" value="{{.Name}}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descricao">Description</label>
+                                    <input type="text" id="descricao" name="description" class="form-control" value="{{.Description}}">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="preco">Price</label>
+                                        <input type="text" id="preco" class="form-control" inputmode="numeric" placeholder="$0.00" autocomplete="off">
+                                        <input type="hidden" id="preco-valor" name="price" value="{{.Price}}">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="quantidade">Quantity</label>
+                                        <input type="number" id="quantidade" name="quantity" class="form-control" value="{{.Quantity}}">
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-4">
+                                    <a class="btn btn-outline-secondary" href="/">Return</a>
+                                    <button type="submit" class="btn btn-success">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            (function () {
+                var display = document.getElementById('preco');
+                var hidden = document.getElementById('preco-valor');
+
+                function formatarDolar(centavos) {
+                    return (centavos / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+                }
+
+                var inicial = parseFloat(hidden.value) || 0;
+                display.value = inicial ? formatarDolar(Math.round(inicial * 100)) : '';
+
+                display.addEventListener('input', function (e) {
+                    var digitos = e.target.value.replace(/\D/g, '');
+                    if (!digitos) {
+                        e.target.value = '';
+                        hidden.value = '';
+                        return;
+                    }
+                    var centavos = parseInt(digitos, 10);
+                    hidden.value = (centavos / 100).toFixed(2);
+                    e.target.value = formatarDolar(centavos);
+                });
+            })();
+        </script>
+    </body>
+</html>
+
+{{end}}

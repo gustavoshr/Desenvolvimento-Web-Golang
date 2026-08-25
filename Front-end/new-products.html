@@ -1,21 +1,9 @@
 {{define "new-products"}}
 <!DOCTYPE html>
 <html lang="en">
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-            crossorigin="anonymous">
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-        <title>Gopher Store</title>
-    </head>
+{{template "head" .}}
     <body>
-        <nav class="navbar navbar-light bg-light mb-4">
-            <a class="navbar-brand" href="/">Gopher Store</a>
-        </nav>
+        {{template "nav" .}}
         <div class="container">
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
@@ -44,7 +32,8 @@
                         <div class="col-sm-2">
                             <div class="form-group">
                                 <label for="preco">Price:</label>
-                                <input type="number" name="price" class="form-control" step="0.01">
+                                <input type="text" id="preco" class="form-control" inputmode="numeric" placeholder="$0.00" autocomplete="off">
+                                <input type="hidden" id="preco-valor" name="price">
                             </div>
                         </div>
                     </div>
@@ -60,6 +49,28 @@
                     <a class="btn btn-info" href="/">Return</a>
                 </form>
         </div>
+        <script>
+            (function () {
+                var display = document.getElementById('preco');
+                var hidden = document.getElementById('preco-valor');
+
+                function formatarDolar(centavos) {
+                    return (centavos / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+                }
+
+                display.addEventListener('input', function (e) {
+                    var digitos = e.target.value.replace(/\D/g, '');
+                    if (!digitos) {
+                        e.target.value = '';
+                        hidden.value = '';
+                        return;
+                    }
+                    var centavos = parseInt(digitos, 10);
+                    hidden.value = (centavos / 100).toFixed(2);
+                    e.target.value = formatarDolar(centavos);
+                });
+            })();
+        </script>
     </body>
 </html>
 {{end}}
