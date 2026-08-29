@@ -4,50 +4,44 @@
 {{template "head" .}}
     <body>
         {{template "nav" .}}
-        <div class="container">
-                <div class="jumbotron jumbotron-fluid">
-                    <div class="container">
-                        <h1 class="display-5">New Product</h1>
-                        <p class="lead">insert details </p>
+        <div class="container page-shell">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h1 class="h3 mb-0">New Product</h1>
+                            <small class="text-muted">Add a product to the catalog</small>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="insert">
+                                <div class="form-group">
+                                    <label for="nome">Name</label>
+                                    <input type="text" id="nome" name="name" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descricao">Description</label>
+                                    <input type="text" id="descricao" name="description" class="form-control">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="preco">Price</label>
+                                        <input type="text" id="preco" class="form-control" inputmode="numeric" placeholder="$0.00" autocomplete="off">
+                                        <input type="hidden" id="preco-valor" name="price">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="quantidade">Quantity</label>
+                                        <input type="number" id="quantidade" name="quantity" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-4">
+                                    <a class="btn btn-outline-secondary" href="/">Return</a>
+                                    <button type="submit" class="btn btn-success">Save</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                <form method="POST" action="insert">
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <div class="form-group">
-                                <label for="nome">Name:</label>
-                                <input type="text" name="name" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <div class="form-group">
-                                <label for="descricao">Description:</label>
-                                <input type="text" name="description" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <label for="preco">Price:</label>
-                                <input type="text" id="preco" class="form-control" inputmode="numeric" placeholder="$0.00" autocomplete="off">
-                                <input type="hidden" id="preco-valor" name="price">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <label for="quantidade">Quantity:</label>
-                                <input type="number" name="quantity" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" value="salvar" class="btn btn-success">Save</button>
-                    <a class="btn btn-info" href="/">Return</a>
-                </form>
+            </div>
         </div>
         <script>
             (function () {

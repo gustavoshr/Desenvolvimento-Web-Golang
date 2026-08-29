@@ -8,5 +8,176 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <title>Golang Store</title>
+    <style>
+        :root {
+            --canvas: oklch(96.5% 0.004 250);
+            --surface: oklch(99% 0.002 250);
+            --surface-sunken: oklch(93% 0.007 250);
+            --border: oklch(87% 0.008 250);
+            --border-strong: oklch(70% 0.012 250);
+
+            --text-primary: oklch(22% 0.02 250);
+            --text-secondary: oklch(42% 0.016 250);
+
+            --primary: oklch(52% 0.16 220);
+            --primary-hover: oklch(46% 0.17 220);
+            --primary-active: oklch(41% 0.17 220);
+            --primary-surface: oklch(95% 0.025 220);
+            --primary-border: oklch(68% 0.09 220);
+            --on-primary: oklch(99% 0.004 220);
+
+            --success: oklch(48% 0.13 152);
+            --success-hover: oklch(42% 0.14 152);
+            --on-success: oklch(99% 0.006 152);
+
+            --danger: oklch(50% 0.18 25);
+            --danger-hover: oklch(44% 0.18 25);
+            --danger-border: oklch(74% 0.07 25);
+            --on-danger: oklch(99% 0.006 25);
+
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 24px;
+            --space-6: 32px;
+            --space-7: 48px;
+            --space-8: 64px;
+
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+
+            --shadow-sm: 0 1px 2px oklch(22% 0.02 250 / 0.07), 0 1px 1px oklch(22% 0.02 250 / 0.04);
+            --shadow-md: 0 8px 24px oklch(22% 0.02 250 / 0.10), 0 2px 6px oklch(22% 0.02 250 / 0.06);
+        }
+
+        body {
+            background: var(--canvas);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--primary); }
+        a:hover { color: var(--primary-hover); }
+
+        ::selection { background: var(--primary-surface); color: var(--text-primary); }
+        ::placeholder { color: var(--text-secondary); opacity: 1; }
+
+        :focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--primary-surface), 0 0 0 1px var(--primary-border);
+        }
+
+        .form-control { border-color: var(--border-strong); }
+        .form-control:focus {
+            border-color: var(--primary-border);
+            box-shadow: 0 0 0 3px var(--primary-surface);
+        }
+
+        /* Nav */
+        .app-nav {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: var(--space-3) var(--space-4);
+        }
+        .app-nav .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .app-nav .navbar-brand:hover { color: var(--text-primary); }
+        .app-nav .brand-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-sm);
+            background: var(--primary);
+            color: var(--on-primary);
+            font-size: 0.875rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        /* Page shell */
+        .page-shell { padding-top: var(--space-2); padding-bottom: var(--space-8); }
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: var(--space-4);
+            margin-bottom: var(--space-5);
+        }
+        .page-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: var(--space-1);
+        }
+        .text-muted { color: var(--text-secondary) !important; }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        .card-header {
+            background: var(--surface) !important;
+            border-bottom: 1px solid var(--border);
+            padding: var(--space-5);
+        }
+        .card-body { padding: var(--space-5); }
+
+        /* Table */
+        .table { margin-bottom: 0; color: var(--text-primary); }
+        .table thead th {
+            background: var(--surface-sunken);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border-bottom: 1px solid var(--border);
+            border-top: none;
+            padding: var(--space-3) var(--space-4);
+            white-space: nowrap;
+        }
+        .table td {
+            padding: var(--space-3) var(--space-4);
+            border-top: 1px solid var(--border);
+            vertical-align: middle;
+        }
+        .table-hover tbody tr:hover { background: var(--primary-surface); }
+        .table .cell-numeric { text-align: right; font-variant-numeric: tabular-nums; }
+        .table .cell-actions { text-align: right; white-space: nowrap; }
+
+        /* Buttons */
+        .btn { font-weight: 600; border-radius: var(--radius-sm); }
+        .btn-primary { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+        .btn-primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); color: var(--on-primary); }
+        .btn-primary:active { background: var(--primary-active) !important; border-color: var(--primary-active) !important; }
+        .btn-success { background: var(--success); border-color: var(--success); color: var(--on-success); }
+        .btn-success:hover { background: var(--success-hover); border-color: var(--success-hover); color: var(--on-success); }
+        .btn-outline-primary { color: var(--primary); border-color: var(--primary-border); }
+        .btn-outline-primary:hover { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+        .btn-outline-danger { color: var(--danger); border-color: var(--danger-border); }
+        .btn-outline-danger:hover { background: var(--danger); border-color: var(--danger); color: var(--on-danger); }
+        .btn-outline-secondary { color: var(--text-secondary); border-color: var(--border-strong); }
+        .btn-outline-secondary:hover { background: var(--text-secondary); border-color: var(--text-secondary); color: var(--on-primary); }
+
+        /* Forms */
+        label { font-weight: 600; font-size: 0.875rem; color: var(--text-secondary); margin-bottom: var(--space-1); }
+
+        /* Empty state */
+        .empty-state { padding: var(--space-8) var(--space-5); text-align: center; }
+        .empty-state p.empty-title { font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-1); }
+        .empty-state p.text-muted { margin-bottom: var(--space-4); }
+    </style>
 </head>
 {{end}}
